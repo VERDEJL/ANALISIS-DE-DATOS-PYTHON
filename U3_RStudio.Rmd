@@ -1,0 +1,73 @@
+---
+title: "U3_RStudio"
+output: html_notebook
+---
+JOSE LUIS VERDE 19130002
+Hacemos load del dataset y mostramos los primeros 6 datos para validar que se cargo correctamente.
+```{r}
+pokemon <- read.csv("C:\\Users\\verde\\Documents\\AGO2022\\BIGDATA\\pokemon2020\\pokedex_Ver9.csv")
+head(pokemon)
+```
+
+al hacer uso de [] podemos mostrar la linea deseada
+```{r}
+pokemon[1,]
+
+```
+
+Ahora usando str podemos ver la estructura del dataset
+```{r} 
+str(pokemon)
+```
+
+Primero hacemos load del dataset con el argumento de StringAsFactor para evitar errores de lectura.
+Con este comando se pueden cambiar datos del dataset, en este ejemplo cambiamos los tipo fire por grass
+```{r}
+pokemonstr <- read.csv(file = "C:\\Users\\verde\\Documents\\AGO2022\\BIGDATA\\pokemon2020\\pokedex_Ver9.csv",stringsAsFactors = FALSE)
+pokemonstr$Type1 <- ifelse(pokemonstr$Type1 == 'Fire','Grass', pokemonstr$Type1)
+pokemonstr$Type1
+
+```
+
+Para remplazar datos en un dataset se utiliza el "comando" '<-'
+```{r}
+pokemon$Name[1] <- NA
+head(pokemon)
+```
+
+Ahora con plot podemos hacer una comparativa con plot para mostrar cuantos pokemons hay en cada peso
+y altura, como podemos ver hay muy pocos pokemon que midan mas de 2m y la mayoria pesa entre 0 y 16kg
+```{r}
+plot(x = pokemon$Height, y = pokemon$Weight, xlab = "Altura", ylab = "Peso", main = "Tamanio")
+```
+
+Ahora podemos hacer una comparacion un poco mas util donde nos muestra cuanta vida tienen a comparacion de su defensa
+Como podemos ver los pokemon con mas vida tienden a tener muy poca defensa y los pokemones con una vida baja, mas alta.
+```{r}
+plot(x = pokemon$HP,y = pokemon$Defense, xlab = "Vida", ylab = "Defensa", main = "Vida vs Defensa")
+```
+
+Ahora podemos hacer la grafica mas llamativa con los comandos col de color y pch
+```{r}
+plot(x = pokemon$HP,y = pokemon$Defense, xlab = "Vida", ylab = "Defensa", main = "Vida vs Defensa",
+     col = "cyan", pch = 6)
+```
+
+Tambien se pueden agregar funciones lineales que se adentren a los datos con la funcion abline.
+```{r}
+plot(x = pokemon$HP,y = pokemon$Defense, xlab = "Vida", ylab = "Defensa", main = "Vida vs Defensa",
+     col = "cyan", pch = 6)
+abline(lm(pokemon$HP ~ pokemon$Defense,data = pokemon),col = "black")
+```
+Como podemos observar los datos no tienden a crecer mucho y se mantienen en un rango promedio de 50 y 120 aprox.
+
+Ahora con barplot podemos hacer una medicion de un solo valor en pokemones selectos, en este caso usare head para mostrar los primeros 6 y muestre su vida base para ver la diferencia.
+```{r}
+barplot(height = head(pokemon)$HP,names.arg = head(pokemon)$Original_Name)
+```
+
+```{r}
+barplot(height = pokemon$Speed,names.arg = pokemon$No)
+```
+Ahora podemos llamar todos los datos de los pokemon para ver la diferencia de velocidad entre ellos.
+Ya con estos comandos se entiende la base de R y su potencial, con ellos podemos hacer chequeos de cualquier dato 
